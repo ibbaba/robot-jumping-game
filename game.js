@@ -32,4 +32,65 @@ document.addEventListener("keydown", function(event) {
 
 // Update the game state
 function updateGame() {
-    if (!gameStarted) return;  // Skip if
+    if (!gameStarted) return;  // Skip if the game hasn't started
+
+    // Update robot position
+    robotVelocity += gravity;
+    robotPosition += robotVelocity;
+    if (robotPosition >= 50) {
+        robotPosition = 50;
+        isJumping = false;
+        robotVelocity = 0;
+    }
+    robot.style.bottom = robotPosition + "px";
+
+    // Move obstacles
+    obstacles.forEach(obstacle => {
+        let obstaclePosition = parseInt(obstacle.style.right);
+        obstaclePosition += gameSpeed;
+        obstacle.style.right = obstaclePosition + "px";
+
+        // Remove obstacle if it goes off-screen
+        if (obstaclePosition > window.innerWidth) {
+            obstacle.remove();
+            obstacles.shift();
+        }
+
+        // Check for collision
+        if (obstaclePosition > 100 && obstaclePosition < 150 && robotPosition < 100) {
+            hitSound.play();
+            clearInterval(gameInterval);  // Stop the game loop
+            alert("Game Over!");  // Show Game Over message
+        }
+    });
+
+    // Add new obstacles over time
+    if (Date.now() - lastObstacleTime > 2000) {
+        createObstacle();
+        lastObstacleTime = Date.now();
+    }
+
+    gameSpeed += 0.001;  // Increase speed over time
+}
+
+// Create new obstacles
+function createObstacle() {
+    let obstacle = document.createElement("div");
+    obstacle.classList.add("obstacle");
+    obstacle.style.right = "0px";
+    document.getElementById("game-container").appendChild(obstacle);
+    obstacles.push(obstacle);
+}
+
+// Restart the game (optional feature to reset)
+function restartGame() {
+    obstacles.forEach(obstacle => obstacle.remove());
+    obstacles = [];
+    robotPosition = 50;
+    gameSpeed = 2;
+    lastObstacleTime = 0;
+    gameStarted = false;
+    robot.style.bottom = robotPosition + "px";
+    gameInterval = setInterval(updateGame, 1000 / 60);  // Restart game loop
+}
+
