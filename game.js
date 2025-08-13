@@ -1,7 +1,7 @@
 // Game setup
 const robot = document.getElementById("robot");
-const jumpSound = document.getElementById("jump_sound");
-const hitSound = document.getElementById("hit_sound");
+const jumpSound = document.getElementById("jump_sound.mp3");
+const hitSound = document.getElementById("hit_sound.mp3");
 
 let isJumping = false;
 let gravity = 0.6;
