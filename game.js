@@ -46,7 +46,7 @@ function updateGame() {
     }
     robot.style.bottom = robotPosition + "px";
 
-    // Move obstacles (center them and move from right to left)
+    // Move obstacles
     obstacles.forEach(obstacle => {
         let obstaclePosition = parseInt(obstacle.style.right);
         obstaclePosition += gameSpeed;
@@ -58,7 +58,7 @@ function updateGame() {
             obstacles.shift();
         }
 
-        // Check for collision with the robot
+        // Check for collision
         if (obstaclePosition > 100 && obstaclePosition < 150 && robotPosition < 100) {
             hitSound.play();  // Play hit sound
             clearInterval(gameInterval);  // Stop the game loop
@@ -75,12 +75,11 @@ function updateGame() {
     gameSpeed += 0.001;  // Increase speed over time
 }
 
-// Create new obstacles in the center
+// Create new obstacles
 function createObstacle() {
     let obstacle = document.createElement("div");
     obstacle.classList.add("obstacle");
-    obstacle.style.right = "0px"; // Start position of obstacle on the right
-    obstacle.style.bottom = "100px"; // Set obstacle height above the ground (centered)
+    obstacle.style.right = "0px";
     document.getElementById("game-container").appendChild(obstacle);
     obstacles.push(obstacle);
 }
@@ -95,4 +94,4 @@ function restartGame() {
     gameStarted = false;
     robot.style.bottom = robotPosition + "px";
     gameInterval = setInterval(updateGame, 1000 / 60);  // Restart game loop
-}
+}    
