@@ -1,7 +1,7 @@
 // Game setup
 const robot = document.getElementById("robot");
-const jumpSound = document.getElementById("jump_sound.mp3");
-const hitSound = document.getElementById("hit_sound.mp3");
+const jumpSound = document.getElementById("jump_sound");
+const hitSound = document.getElementById("hit_sound");
 
 let isJumping = false;
 let gravity = 0.6;
@@ -26,7 +26,7 @@ document.addEventListener("keydown", function(event) {
     if (event.key === " " && !isJumping) {
         isJumping = true;
         robotVelocity = jumpStrength;
-        jumpSound.play();
+        jumpSound.play();  // Play jump sound
     }
 });
 
@@ -37,6 +37,8 @@ function updateGame() {
     // Update robot position
     robotVelocity += gravity;
     robotPosition += robotVelocity;
+
+    // Prevent the robot from falling below the ground
     if (robotPosition >= 50) {
         robotPosition = 50;
         isJumping = false;
@@ -58,7 +60,7 @@ function updateGame() {
 
         // Check for collision
         if (obstaclePosition > 100 && obstaclePosition < 150 && robotPosition < 100) {
-            hitSound.play();
+            hitSound.play();  // Play hit sound
             clearInterval(gameInterval);  // Stop the game loop
             alert("Game Over!");  // Show Game Over message
         }
@@ -93,4 +95,3 @@ function restartGame() {
     robot.style.bottom = robotPosition + "px";
     gameInterval = setInterval(updateGame, 1000 / 60);  // Restart game loop
 }
-
